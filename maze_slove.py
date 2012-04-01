@@ -45,6 +45,7 @@ class Maze:
 		self.size = (len(self.cols[0]), len(self.cols))
 
 		# ゴールの位置を設定(x, y)
+		#self.cols[self.size[1]-2][self.size[0]-1] = 'G'
 		self.cols[self.size[1]-2][self.size[0]-1] = 'G'
 
 		# ゴールしたか判定
@@ -57,9 +58,12 @@ class Maze:
 	# 迷路突破
 	#
 	def slove(self):
-		# 開始座標は(1, 1)
 		vector = (0, 0)
+
+		# 開始座標は(1, 1)
 		self.cols[1][0] = 'S'
+
+		#self.walk(1, self.size[1]-2, vector)
 		self.walk(1, 1, vector)
 
 	def walk(self, x, y, vector):
@@ -86,14 +90,6 @@ class Maze:
 		#
 		# 上下左右に進めるかを判定
 		#
-		# 右
-		vector = (1, 0)
-		self.walk(curx, cury, vector)
-
-		# 下
-		vector = (0, 1)
-		self.walk(curx, cury, vector)
-
 		# 左
 		vector = (-1, 0)
 		self.walk(curx, cury, vector)
@@ -102,8 +98,16 @@ class Maze:
 		vector = (0, -1)
 		self.walk(curx, cury, vector)
 
+		# 右
+		vector = (1, 0)
+		self.walk(curx, cury, vector)
+
+		# 下
+		vector = (0, 1)
+		self.walk(curx, cury, vector)
+
 		# 足跡を消す
-		self.cols[cury][curx] = ' '
+		self.cols[cury][curx] = '.'
 			
 	# 当たり判定
 	def canGo(self, x, y):
