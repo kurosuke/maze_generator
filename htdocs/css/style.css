@@ -1,4 +1,4 @@
-@UTF-8;
+@charset "utf-8";
 
 /* ボタンの表示 */
 input[type="button"], input[type="submit"] {
@@ -59,6 +59,3 @@ input[type="button"]:hover, input[type="submit"]:hover {
     box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
 }
 
-}
-
-/* 全体 */
