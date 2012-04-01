@@ -1,0 +1,64 @@
+@UTF-8;
+
+/* ボタンの表示 */
+input[type="button"], input[type="submit"] {
+    width: 120px;  
+    height: 22px;  
+    background: #ddd;
+    border: 2px solid #ccc;  
+    border-color: #666 #444 #444 #666;  
+    font: 600 14px/1 Lucida Sans, Verdana, sans-serif;  
+    color: #fff;  
+    text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;  
+    text-align: center;  
+    vertical-align: middle;  
+    white-space: nowrap;  
+    text-overflow: ellipsis;  
+    overflow: hidden;  
+    border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px;  
+
+	/* for IE */
+    filter:
+        progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#cccccc',EndColorStr='#777777'),
+        progid:DXImageTransform.Microsoft.shadow(color=#888888, direction=135, strength=3);
+
+    box-shadow: 0 3px 8px rgba(120, 120, 120, 0.5), inset 0 -6px 8px 0 #666, inset 0 -6px 0 3px #888, inset 0 -22px 5px -8px #aaa;  
+    -moz-box-shadow: 0 3px 8px rgba(120, 120, 120, 0.5), inset 0 -6px 3px 0 #666, inset 0 -6px 0 6px #888, inset 0 -22px 5px -8px #aaa;  
+    -webkit-box-shadow: 0 3px 8px rgba(120, 120, 120, 0.5), inset 0 -6px 8px 0 #666, inset 0 -6px 0 3px #888, inset 0 -22px 5px -8px #aaa;  
+}  
+
+/* ボタンにマウスが触った場合の表示 */
+input[type="button"]:hover, input[type="submit"]:hover {
+  text-shadow: rgb(255, 255, 255) 0px 0px 5px;  
+}
+
+.shadow{
+    -webkit-box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
+    -moz-box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
+    box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
+}
+
+/* 全体 */
+.board{
+	background:none repeat scroll 0 0 #FFFFFF;
+	border-top:1px solid #A6B0B4;
+	border-bottom:1px solid #A6B0B4;
+	border-right:1px solid #A6B0B4;
+	border-left:1px solid #A6B0B4;
+
+	margin:0;
+	text-align:left;
+	vertical-align:top;
+    border-radius: 8px;         /* CSS3 */
+    -moz-border-radius: 8px;    /* Firefox */
+    -webkit-border-radius: 8px; /* Safari,Chrome */
+    padding-left:1px;padding-top:8px;
+	margin:1px;padding:3px;
+    -webkit-box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
+    -moz-box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
+    box-shadow: 3px 3px 5px 0px #777, inset 0px 0px 10px 0px #fff;
+}
+
+}
+
+/* 全体 */

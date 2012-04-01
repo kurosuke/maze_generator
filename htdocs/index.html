@@ -1,0 +1,239 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF8" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" charset="UTF-8">
+	<title>Maze</title>
+    <script type="text/javascript">
+
+	// 迷路
+	var Matrix = new Array();
+
+	// 一升の大きさ
+	var factor = 4;
+
+	// 解く速さ
+	var sleepInterval = 20;	// 初期
+	var sloveTimer;
+
+	// 解き方 保管
+	var slove_operation = [];
+
+	// 迷路をjs形式で読み込む
+	var scrptE = document.createElement("script");
+	scrptE.setAttribute("type", "text/javascript");
+	scrptE.setAttribute("language", "JavaScript");
+	
+	var maze_no = Math.floor(Math.random() * 19)+1;
+	scrptE.setAttribute("src", "./js/maze_" + maze_no + ".js");
+	document.getElementsByTagName("head")[0].appendChild(scrptE);
+
+	// タイマーで解く方法を再生
+	function sloveTimerFunc () {
+		if (slove_operation.length == 0) {
+			clearInterval(sloveTimer);
+			return;
+		}
+		var slove = slove_operation.shift();
+		drawMarkIt(slove[0], slove[1], slove[2]);
+	}
+
+	// 解き方の再生速度変更
+	function speedChange() {
+		sleepInterval = document.getElementById("speed").value;
+		document.getElementById("showSpeed").innerHTML = sleepInterval;
+
+		// 解き方を少しずつ描画
+		clearInterval(sloveTimer);
+		sloveTimer = setInterval(sloveTimerFunc, sleepInterval);
+	}
+
+	// 解き方再生STOP&START
+	function stop_and_start() {
+		clearInterval(sloveTimer);
+	}
+
+	//
+	// 迷路を解く
+	//
+	function Point(x, y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	// 迷路の初期化
+	function init () {
+		// 迷路データの初期化
+		slove_operation = [];
+		Matrix = new Array();
+		Array.prototype.push.apply(Matrix, matrix);
+
+		// 開始位置と終了位置をランダムに設定
+		var start = Math.floor(Math.random() * 4);
+		var goal = start;
+		while (start == goal) {
+			goal = Math.floor(Math.random() * 4);
+		}
+
+		start_point = getPoint(start);
+		goal_point = getPoint(goal);
+
+		setMark(goal_point.x, goal_point.y, 'G')	// GOAL設定
+
+		// 迷路全体の初期描画
+		drawAll();
+
+	}
+
+	function slove () {
+		clearInterval(sloveTimer);
+
+		// 迷路を解く
+		setMark(start_point.x, start_point.y, ' ');		// 開始
+		walk(start_point.x, start_point.y, 0, 0);	
+
+		sloveTimer = setInterval(sloveTimerFunc, sleepInterval);
+	}
+
+	// 開始 or GOAL の設定
+	function getPoint (point) {
+		var x, y;
+		if (point == 0) {
+			// 左上
+			x = 0;
+			y = 1;
+		} else if (point == 1) {
+			// 左下
+			x = 0;
+			y = n-2;
+		} else if (point == 2) {
+			// 右上
+			x = Matrix[0].length-1;
+			y = 1;
+		} else if (point == 3) {
+			// 右下
+			x = Matrix[0].length-1;
+			y = n-2;
+		} 
+
+		return new Point(x, y);
+	}
+
+	// 一歩ずつ
+	function walk (x, y, vector_x, vector_y) {
+
+		// 歩く先の座業を求める
+		var curx = x + vector_x;
+		var cury = y + vector_y;
+
+		// ワールド座標内かチェック
+		if (curx < 0 || cury < 0 
+			|| cury >= Matrix.length || curx >= Matrix[cury].length) {
+			return false;
+		}
+
+		// ゴール判定
+		if (getMark(curx, cury) == 'G') {
+			return true;
+		}
+
+		// 歩ける場所かを判定
+		if (getMark(curx, cury) != ' ') {
+			// 壁か、既に歩いた
+			return false;
+		}
+
+		// 足跡を付ける
+		setMark(curx, cury, 'x');
+		
+		// 上下左右に進めるか
+		if (walk(curx, cury, 0, 1) == true) {
+			return true;
+		}
+		if (walk(curx, cury, 1, 0) == true) {
+			return true;
+		}
+		if (walk(curx, cury, 0, -1) == true) {
+			return true;
+		}
+		if (walk(curx, cury, -1, 0) == true) {
+			return true;
+		}
+
+		// 足跡を消す
+		setMark(curx, cury, '.');
+	}
+
+	function getMark (x, y) {
+		var mark = Matrix[y].substr(x, 1);
+		return mark;
+	}
+
+	function setMark (x, y, mark) {
+		// マトリクスを書き換える
+		var line = Matrix[y].substr(0, x) + mark + Matrix[y].substr(x+1);
+		Matrix[y] = line;
+
+		// 解き方を覚えておく
+		slove_operation[slove_operation.length] = new Array(x, y, mark);
+
+		return mark;
+	}
+
+	function drawAll () {
+        var canvas = document.getElementById('maze');
+    	var ctx = canvas.getContext('2d');
+		ctx.fillStyle = "rgb(255, 255, 255)";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+		for (var y = 0; y < Matrix.length; y++) {
+			for (var x = 0; x < Matrix[y].length; x++) {
+				drawMark(x, y);
+			}
+		}
+    }
+
+	// 指定された場所を描画
+	function drawMark (x, y) {
+		var mark = getMark(x, y);
+		drawMarkIt (x, y, mark);
+	}
+
+	function drawMarkIt (x, y, mark) {
+        var canvas = document.getElementById('maze');
+    	var ctx = canvas.getContext('2d');
+
+		if (mark == '-' || mark == '|' || mark == '+') {
+			ctx.fillStyle = "rgb(100, 100, 100)";
+			ctx.fillRect(x*factor,y*factor,factor,factor);
+		} else if (mark == 'x') {
+			ctx.fillStyle = "rgb(0,25, 205)";
+			ctx.fillRect(x*factor,y*factor,factor,factor);
+		} else if (mark == '.') {
+			ctx.fillStyle = "rgb(200, 200, 200)";
+			ctx.fillRect(x*factor,y*factor,factor,factor);
+		} else if (mark == 'G') {
+			ctx.fillStyle = "rgb(210, 0, 0)";
+			ctx.fillRect(x*factor,y*factor,factor,factor);
+		}
+	}
+
+	</script>
+	<style type="text/css">
+		  canvas { border: 1px solid #999; }
+    </style>
+</head>
+<body onload="init();">
+	迷路
+	<div class="board">
+    <canvas id="maze" width="644" height="644" class="shadow"></canvas>
+	<br>
+	解き方の再生速度:
+	<input id="speed" type="range" min="0" max="200" step="10" onChange="speedChange()"/>
+		 <span id="showSpeed">20</span>
+	<br>
+	<input id="slove" type="button" value="解くぞ" onClick="slove()" />
+	<input id="stop_and_start" type="button" value="止めるぞ" onClick="stop_and_start()" />
+	<input id="slove_init" type="button" value="最初に戻る" onClick="init()" />
+	</div>
+ </body>
+</html>
