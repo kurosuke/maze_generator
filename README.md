@@ -1,15 +1,15 @@
-mage generator by by python
-
-クラスター法による迷路生成ツール。pythonの練習に作りました。
+# mage generator by python
 
 - cluster algorithm
-- 解答は常に1つ
-- 入り口と出口は、自分で適当に。
-　左上と右下で十分だと思う。
+- 1 way solution
+- markup enter and exit yourself
 
-ex) 10x10 の部屋のある迷路を作成
 
-% python maze_genrator.py 10 | tee maze.txt
+
+ex) generate 10x10 matrix maze
+
+```
+% python maze_generate.py 10 | tee maze.txt
 +-+-+-+-+-+-+-+-+-+-+
 | |   |       |     |
 + + + + +-+ +-+ +-+-+
@@ -31,10 +31,12 @@ ex) 10x10 の部屋のある迷路を作成
 +-+-+ +-+ +-+ + + + +
 |       |       | | |
 +-+-+-+-+-+-+-+-+-+-+
+```
 
 
-ex) 10x10 の部屋のある迷路の解答
+ex) slove 10x10 matrix maze
 
+```
 % python maze_slove.py maze.txt
 GOAL!
 +-+-+-+-+-+-+-+-+-+-+
@@ -58,4 +60,4 @@ Sx|   |       |     |
 +-+-+ +-+x+-+ +x+ +x+
 |       |xxxxxxx| |xG
 +-+-+-+-+-+-+-+-+-+-+
-
+```

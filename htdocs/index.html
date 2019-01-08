@@ -75,13 +75,15 @@
 		}
 
 		start_point = getPoint(start);
+    console.log("get start point " + start_point.x + "," + start_point.y);
 		goal_point = getPoint(goal);
+    console.log("get goal point " + goal_point.x + "," + goal_point.y);
 
+		setMark(start_point.x, start_point.y, 'S')	// START設定
 		setMark(goal_point.x, goal_point.y, 'G')	// GOAL設定
 
 		// 迷路全体の初期描画
 		drawAll();
-
 	}
 
 	function slove () {
@@ -97,22 +99,24 @@
 	// 開始 or GOAL の設定
 	function getPoint (point) {
 		var x, y;
+    var width = (Matrix[0].length-2);
+    var height = (Matrix[0].length-2);
 		if (point == 0) {
 			// 左上
-			x = 0;
+			x = 1;
 			y = 1;
 		} else if (point == 1) {
 			// 左下
-			x = 0;
-			y = n-2;
+			x = 1;
+			y = height;
 		} else if (point == 2) {
 			// 右上
-			x = Matrix[0].length-1;
+			x = width;
 			y = 1;
 		} else if (point == 3) {
 			// 右下
-			x = Matrix[0].length-1;
-			y = n-2;
+			x = width;
+			y = height;
 		} 
 
 		return new Point(x, y);
@@ -190,7 +194,7 @@
 				drawMark(x, y);
 			}
 		}
-    }
+  }
 
 	// 指定された場所を描画
 	function drawMark (x, y) {
@@ -199,8 +203,8 @@
 	}
 
 	function drawMarkIt (x, y, mark) {
-        var canvas = document.getElementById('maze');
-    	var ctx = canvas.getContext('2d');
+    var canvas = document.getElementById('maze');
+    var ctx = canvas.getContext('2d');
 
 		if (mark == '-' || mark == '|' || mark == '+') {
 			ctx.fillStyle = "rgb(100, 100, 100)";
@@ -213,6 +217,9 @@
 			ctx.fillRect(x*factor,y*factor,factor,factor);
 		} else if (mark == 'G') {
 			ctx.fillStyle = "rgb(210, 0, 0)";
+			ctx.fillRect(x*factor,y*factor,factor,factor);
+		} else if (mark == 'S') {
+			ctx.fillStyle = "rgb(0, 0, 250)";
 			ctx.fillRect(x*factor,y*factor,factor,factor);
 		}
 	}
